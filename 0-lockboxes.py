@@ -1,8 +1,21 @@
 #!/usr/bin/python3
 """
-Method that determines if all the boxes can be opened.
+Solution to the lockboxes problem
 """
+
+
 def canUnlockAll(boxes):
+    """
+    Determines whether a series of locked boxes can be opened
+    based on keys that can be attained.
+
+    Args:
+        boxes (list): A list of lists representing locked boxes
+        and their corresponding keys.
+
+    Returns:
+        bool: True if all boxes can be opened, False otherwise.
+    """
     if not boxes:
         return False
 
