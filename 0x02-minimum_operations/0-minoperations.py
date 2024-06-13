@@ -1,12 +1,15 @@
 #!/usr/bin/python3
 """
-Defines a method that calculates the fewest number of operations needed
-to result in exactly n H characters in a file.
+Defines a method that calculates the fewest number of
+operations needed to result in exactly n H characters
+in a file.
 """
+
 
 def minOperations(n):
     """
-    Computes the minimum number of operations needed for the Copy All and Paste task.
+    Computes the minimum number of operations needed for
+    the Copy All and Paste task.
 
     Args:
         n: The desired number of H characters.
