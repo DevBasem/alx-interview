@@ -18,14 +18,15 @@ def minOperations(n):
     if n <= 1:
         return n
 
-    # Initialize the result with n itself because paste n times is an option
-    result = n
+    # Initialize the result
+    result = 0
 
-    # Try all factors from 2 to sqrt(n)
-    for i in range(2, int(n ** 0.5) + 1):
-        if n % i == 0:
-            # If 'i' is a factor, recursively find the minimum operations
-            # required for n/i characters and paste 'i' times
-            result = min(result, i + minOperations(n // i))
+    # Find prime factors of n
+    for i in range(2, n + 1):
+        while n % i == 0:
+            result += i
+            n //= i
+        if n == 1:
+            break
 
     return result
