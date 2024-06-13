@@ -6,31 +6,22 @@ to result in exactly n H characters in a file.
 
 def minOperations(n):
     """
-    Calculates the fewest number of operations needed to result in exactly
-    n H characters in a file.
+    Computes the minimum number of operations needed for the Copy All and Paste task.
 
     Args:
-        n (int): The desired number of H characters.
+        n: The desired number of H characters.
 
     Returns:
-        int: The fewest number of operations needed.
+        The sum of the operations.
     """
-    if n <= 1:
+    if n < 2:
         return 0
-
-    # Function to calculate prime factors of a number
-    def prime_factors(num):
-        factors = []
-        while num % 2 == 0:
-            factors.append(2)
-            num //= 2
-        for i in range(3, int(num**0.5) + 1, 2):
-            while num % i == 0:
-                factors.append(i)
-                num //= i
-        if num > 2:
-            factors.append(num)
-        return len(factors)
-
-    # Get prime factors count of n
-    return prime_factors(n)
+    operations = []
+    i = 1
+    while n != 1:
+        i += 1
+        if n % i == 0:
+            while n % i == 0:
+                n /= i
+                operations.append(i)
+    return sum(operations)
