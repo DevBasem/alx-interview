@@ -18,15 +18,22 @@ def minOperations(n):
     if n <= 1:
         return n
 
-    # Initialize the result
-    result = 0
+    # Function to calculate prime factors of a number
+    def prime_factors(num):
+        factors = []
+        while num % 2 == 0:
+            factors.append(2)
+            num //= 2
+        for i in range(3, int(num**0.5) + 1, 2):
+            while num % i == 0:
+                factors.append(i)
+                num //= i
+        if num > 2:
+            factors.append(num)
+        return factors
 
-    # Find prime factors of n
-    for i in range(2, n + 1):
-        while n % i == 0:
-            result += i
-            n //= i
-        if n == 1:
-            break
+    # Get prime factors of n
+    factors = prime_factors(n)
 
-    return result
+    # The sum of prime factors will give the minimum operations needed
+    return sum(factors)
