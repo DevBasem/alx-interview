@@ -16,7 +16,7 @@ def minOperations(n):
         int: The fewest number of operations needed.
     """
     if n <= 1:
-        return n
+        return 0
 
     # Function to calculate prime factors of a number
     def prime_factors(num):
@@ -30,10 +30,7 @@ def minOperations(n):
                 num //= i
         if num > 2:
             factors.append(num)
-        return factors
+        return len(factors)
 
-    # Get prime factors of n
-    factors = prime_factors(n)
-
-    # The sum of prime factors will give the minimum operations needed
-    return sum(factors)
+    # Get prime factors count of n
+    return prime_factors(n)
