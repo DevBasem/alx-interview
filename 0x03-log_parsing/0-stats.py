@@ -26,6 +26,7 @@ try:
         line = line.strip()
         parts = line.split()
         
+        # Check if line matches expected format
         if len(parts) >= 7:
             try:
                 status_code = int(parts[-2])
@@ -42,8 +43,9 @@ try:
                     print_statistics()
             
             except ValueError:
-                # If status code or file size cannot be converted to int, skip the line
-                continue
+                continue  # Skip lines where status code or file size cannot be converted to int
+        else:
+            continue  # Skip lines that do not have enough parts to match the format
 
 except KeyboardInterrupt:
     pass
