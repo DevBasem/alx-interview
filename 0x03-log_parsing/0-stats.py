@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""
+task log parsing
+"""
 import sys
 import re
 import signal
