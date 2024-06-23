@@ -1,53 +1,46 @@
 #!/usr/bin/python3
 import sys
+import re
 import signal
 
-# Initialize variables to store metrics
-total_file_size = 0
-status_code_counts = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
-line_count = 0
+def output(log: dict) -> None:
+    """
+    helper function to display stats
+    """
+    print("File size: {}".format(log["file_size"]))
+    for code in sorted(log["code_frequency"]):
+        if log["code_frequency"][code]:
+            print("{}: {}".format(code, log["code_frequency"][code]))
 
-def print_statistics():
-    print(f"File size: {total_file_size}")
-    for code in sorted(status_code_counts.keys()):
-        if status_code_counts[code] > 0:
-            print(f"{code}: {status_code_counts[code]}")
-    sys.stdout.flush()
 
-def signal_handler(sig, frame):
-    print_statistics()
-    sys.exit(0)
+if __name__ == "__main__":
+    regex = re.compile(
+    r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3} - \[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d+\] "GET /projects/260 HTTP/1.1" (.{3}) (\d+)')  # nopep8
 
-# Register signal handler for SIGINT (Ctrl+C)
-signal.signal(signal.SIGINT, signal_handler)
+    line_count = 0
+    log = {}
+    log["file_size"] = 0
+    log["code_frequency"] = {
+        str(code): 0 for code in [
+            200, 301, 400, 401, 403, 404, 405, 500]}
 
-try:
-    for line in sys.stdin:
-        line = line.strip()
-        parts = line.split()
-        
-        # Check if line matches expected format
-        if len(parts) >= 7:
-            try:
-                status_code = int(parts[-2])
-                file_size = int(parts[-1])
-                
-                total_file_size += file_size
-                
-                if status_code in status_code_counts:
-                    status_code_counts[status_code] += 1
-                
+    try:
+        for line in sys.stdin:
+            line = line.strip()
+            match = regex.fullmatch(line)
+            if (match):
                 line_count += 1
-                
-                if line_count % 10 == 0:
-                    print_statistics()
-            
-            except ValueError:
-                continue  # Skip lines where status code or file size cannot be converted to int
-        else:
-            continue  # Skip lines that do not have enough parts to match the format
+                code = match.group(1)
+                file_size = int(match.group(2))
 
-except KeyboardInterrupt:
-    pass
+                # File size
+                log["file_size"] += file_size
 
-print_statistics()
+                # status code
+                if (code.isdecimal()):
+                    log["code_frequency"][code] += 1
+
+                if (line_count % 10 == 0):
+                    output(log)
+    finally:
+        output(log)
