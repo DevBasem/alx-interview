@@ -3,6 +3,7 @@
 0-validate_utf8.py
 """
 
+
 def validUTF8(data):
     # Function to check if a byte is valid as the start of a UTF-8 character
     def is_start_of_utf8(byte):
@@ -21,12 +22,12 @@ def validUTF8(data):
             num_bytes = 4
         else:
             return False
-        
+
         # Check that subsequent bytes (if any) start with 0b10
         for j in range(1, num_bytes):
             if i + j >= len(data) or not is_start_of_utf8(data[i + j]):
                 return False
-        
+
         i += num_bytes
 
     return True
