@@ -3,8 +3,10 @@
 0-validate_utf8.py
 """
 
+
 def countLeadingSetBits(num):
-    """Returns the number of leading set bits (1) in the given number."""
+    """Returns the number of leading set
+    bits (1) in the given number."""
     set_bits = 0
     helper = 1 << 7
     while helper & num:
@@ -14,7 +16,8 @@ def countLeadingSetBits(num):
 
 
 def validUTF8(data):
-    """Determines if a given data set represents a valid UTF-8 encoding."""
+    """Determines if a given data set represents
+    a valid UTF-8 encoding."""
     remaining_bytes = 0
     for i in range(len(data)):
         if remaining_bytes == 0:
