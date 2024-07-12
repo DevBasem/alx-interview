@@ -22,4 +22,3 @@ request(
     fetchCharacterNames(characters, 0);
   }
 );
-
