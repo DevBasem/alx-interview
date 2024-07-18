@@ -3,6 +3,7 @@
 Module to rotate a 2D matrix 90 degrees clockwise.
 """
 
+
 def rotate_2d_matrix(matrix):
     """
     Rotate a 2D matrix 90 degrees clockwise in-place.
@@ -24,6 +25,7 @@ def rotate_2d_matrix(matrix):
             matrix[last - offset][first] = matrix[last][last - offset]
             matrix[last][last - offset] = matrix[i][last]
             matrix[i][last] = top
+
 
 # Ensure the script is executable
 if __name__ == "__main__":
