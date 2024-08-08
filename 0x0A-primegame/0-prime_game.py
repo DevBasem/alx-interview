@@ -1,79 +1,51 @@
 #!/usr/bin/python3
-"""Module for Prime Game"""
+"""Prime Game Module"""
 
 
-def isWinner(x, nums):
+def determine_winner(rounds, numbers):
     """
-    Determines the winner of a set of prime number removal games.
+    Determines the game winner.
 
     Args:
-        x (int): The number of rounds.
-        nums (list of int): A list of integers where each integer n denotes
-        a set of consecutive integers starting from 1 up to and including n.
+        rounds (int): Number of rounds.
+        numbers (list of int): List of numbers.
 
     Returns:
-        str: The name of the player who won the most rounds (either "Ben"
-        or "Maria").
-        None: If the winner cannot be determined.
-
-    Raises:
-        None.
+        str: Winner ("Ben" or "Maria"), or None.
     """
-    # Check for invalid input
-    if x <= 0 or nums is None:
+    if rounds <= 0 or numbers is None or rounds != len(numbers):
         return None
-    if x != len(nums):
-        return None
-    # Initialize scores and array of possible prime numbers
-    ben = 0
-    maria = 0
-    # Create a list 'a' of length sorted(nums)[-1] + 1 with all elements
-    # initialized to 1
-    a = [1 for x in range(sorted(nums)[-1] + 1)]
-    # The first two elements of the list, a[0] and a[1], are set to 0
-    # because 0 and 1 are not prime numbers
-    a[0], a[1] = 0, 0
-    # Use Sieve of Eratosthenes algorithm to generate array of prime numbers
-    for i in range(2, len(a)):
-        rm_multiples(a, i)
-    # Play each round of the game
-    for i in nums:
-        # If the sum of prime numbers in the set is even, Ben wins
-        if sum(a[0:i + 1]) % 2 == 0:
-            ben += 1
+
+    ben_score, maria_score = 0, 0
+    prime_flags = [1] * (max(numbers) + 1)
+    prime_flags[0], prime_flags[1] = 0, 0
+
+    for i in range(2, len(prime_flags)):
+        remove_multiples(prime_flags, i)
+
+    for n in numbers:
+        if sum(prime_flags[:n + 1]) % 2 == 0:
+            ben_score += 1
         else:
-            maria += 1
-    # Determine the winner of the game
-    if ben > maria:
+            maria_score += 1
+
+    if ben_score > maria_score:
         return "Ben"
-    if maria > ben:
+    if maria_score > ben_score:
         return "Maria"
     return None
 
 
-def rm_multiples(ls, x):
+def remove_multiples(prime_flags, prime):
     """
-    Removes multiples of a prime number from an array of possible prime
-    numbers.
+    Marks non-prime multiples.
 
     Args:
-        ls (list of int): An array of possible prime numbers.
-        x (int): The prime number to remove multiples of.
-
-    Returns:
-        None.
-
-    Raises:
-        None.
+        prime_flags (list of int): Prime flags.
+        prime (int): Current prime.
     """
-    # This loop iterates over multiples of a prime number and marks them as
-    # non-prime by setting their corresponding value to 0 in the input
-    # list ls. Starting from 2, it sets every multiple of x up to the
-    # length of ls to 0. If the index i * x is out of range for the list ls,
-    # the try block will raise an IndexError exception, and the loop will
-    # terminate using the break statement.
-    for i in range(2, len(ls)):
+    for i in range(2, len(prime_flags)):
         try:
-            ls[i * x] = 0
+            prime_flags[i * prime] = 0
         except (ValueError, IndexError):
             break
